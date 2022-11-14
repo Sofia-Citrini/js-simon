@@ -2,9 +2,12 @@
 //salvo i numeri casuali in un array e li mostro nella pagina
 //timer 30 secondi 
 const btnPlay = document.querySelector(".btn-play");
+const numContainer = document.querySelector(".num-container");
 
 btnPlay.addEventListener("click", function () {
    numberRandom();
+
+   timer()
 })
 
 function generateNumRandom (min, max){
@@ -12,7 +15,6 @@ function generateNumRandom (min, max){
 }
 
 function numberRandom () {
-    const numContainer = document.querySelector(".num-container");
     const numberList = [];
 
     while (numberList.length < 5) {
@@ -28,4 +30,10 @@ function numberRandom () {
     }
 
     return (numberList);
+}
+
+function timer () {
+    setTimeout ( () => {
+        console.log('tempo scaduto');
+    }, 30000);
 }

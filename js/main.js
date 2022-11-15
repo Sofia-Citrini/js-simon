@@ -1,39 +1,86 @@
-//generare 5 numeri casuali 
-//salvo i numeri casuali in un array e li mostro nella pagina
-//timer 30 secondi 
 const btnPlay = document.querySelector(".btn-play");
-const numContainer = document.querySelector(".num-container");
+
 
 btnPlay.addEventListener("click", function () {
-   numberRandom();
+    const numberRandomList = numberRandom();
 
-   timer()
+    stampaNumRandom(numberRandomList);
+
+    setTimeout (function () {
+        removerNumbers();
+
+        setTimeout (function (){
+            const numberUtenteList = numberUtente(numberRandomList);
+            gameResult (numberUtenteList, numberRandomList);
+        }, 200);
+    }, 2000);
 })
 
-function generateNumRandom (min, max){
-    return Math.floor(Math.random () * (max - min + 1) ) + min;
+//generare numeri random 
+function generateNumRandom(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
-function numberRandom () {
+//array numeri random
+function numberRandom() {
     const numberList = [];
 
     while (numberList.length < 5) {
-        const num = generateNumRandom (1, 100);
+        const num = generateNumRandom(1, 100);
 
         if (!numberList.includes(num)) {
             numberList.push(num);
         }
+    }
+
+    return numberList;
+}
+
+//stampa numeri random
+function stampaNumRandom(numRandom) {
+    const numContainer = document.querySelector(".num-container");
+
+    numContainer.innerHTML = "";
+
+    for (let i = 0; i < numRandom.length; i++) {
+        const num = numRandom[i];
 
         const number = document.createElement("div");
+        number.classList.add('number');
         number.textContent = num;
         numContainer.append(number);
     }
-
-    return (numberList);
 }
 
-function timer () {
-    setTimeout ( () => {
-        console.log('tempo scaduto');
-    }, 30000);
+//nascondere (stop timer) i numeri
+function removerNumbers () {
+    const numContainer = document.querySelector(".num-container");
+    numContainer.classList.add ('d-none');
+}
+
+//numeri utente con prompt
+function numberUtente (numberRandomList) {
+    const numUtenteList = [];
+
+    for (let i = 0; i < 5; i++) {
+        const numUtente = parseInt(prompt('Inserisci il numero'));
+
+        if (numberRandomList.includes(numUtente)) {
+            numUtenteList.push(numUtente);
+        }
+    }
+
+    return numUtenteList;
+}
+
+//risultato del gioco
+function gameResult (numeriUtenti, numeriRandom) {
+    const result = document.querySelector('.result');
+
+    if (numeriUtenti.length === numeriRandom.length) {
+        result.innerHTML = ('Tutti i numeri sono stati indovinati');
+    } else if (numeriUtenti.length === 0) {
+        result.innerHTML =('Nessun numero é stato indovianto');
+    } else {
+        result.innerHTML = (`sono stati indovinati ${numeriUtenti.length} numeri: ${numeriUtenti.join(',')}`);
+    }
 }
